@@ -1,19 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req:NextRequest, res:NextResponse) {
-    const response = await fetch("https://www.reddit.com/r/AskReddit.json?limit=1", { cache: 'no-store' });
+    const response = await fetch("https://www.reddit.com/r/AskReddit.json?limit=10", { cache: 'no-store' });
     const todaysTopPost = await response.json();
+
+    const randomNum = Math.floor(Math.random() * 5);
     
-    const postLink = await todaysTopPost.data.children[0].data.permalink;
+    const postLink = await todaysTopPost.data.children[randomNum].data.permalink;
+    const postTitle = await todaysTopPost.data.children[randomNum].data.title;
     const secondResponse = await fetch(`https://www.reddit.com${postLink}.json?limit=14`);
 
-    const comments = await secondResponse.json();
-    const top10commentsObj = comments[1].data.children;
+    const commentsData = await secondResponse.json();
+    const top10commentsObj = commentsData[1].data.children;
 
-    let postTitle = todaysTopPost.data.children[0].data.title;
     let titleAndTop10comments = [];
     titleAndTop10comments.push(postTitle);
-    for(let x = 0; x < 10; x++) {
+    for(let x = 0; x < 8; x++) {
         titleAndTop10comments.push(top10commentsObj[x].data.body);
     }
 
