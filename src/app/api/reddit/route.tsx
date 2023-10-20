@@ -8,7 +8,7 @@ export async function GET(req:NextRequest, res:NextResponse) {
     
     const postLink = await todaysTopPost.data.children[randomNum].data.permalink;
     const postTitle = await todaysTopPost.data.children[randomNum].data.title;
-    const secondResponse = await fetch(`https://www.reddit.com${postLink}.json?limit=14`);
+    const secondResponse = await fetch(`https://www.reddit.com${postLink}.json?limit=12`, { cache: 'no-store' });
 
     const commentsData = await secondResponse.json();
     const top10commentsObj = commentsData[1].data.children;
