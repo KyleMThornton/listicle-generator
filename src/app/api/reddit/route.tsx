@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req:NextRequest, res:NextResponse) {
-    const response = await fetch("https://www.reddit.com/r/AskReddit.json?limit=1");
+    const response = await fetch("https://www.reddit.com/r/AskReddit.json?limit=1", { cache: 'no-store' });
     const todaysTopPost = await response.json();
     
     const postLink = await todaysTopPost.data.children[0].data.permalink;
